@@ -26,7 +26,7 @@ class ArticulosPdf < Prawn::Document
   end
 
   def articulos_rows
-    [ [{:content => "Total de Artículos en Inventario", :colspan =>3}],
+    [ [{:content => "Total de Ofertas disponibles", :colspan =>3}],
       ['Código', 'Descripción', 'Disponible'] ] +
       @articulos.map do |articulo|
       [articulo.codigo, articulo.descripcion, articulo.existencia.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse]

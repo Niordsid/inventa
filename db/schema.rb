@@ -11,7 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170624093543) do
+ActiveRecord::Schema.define(version: 20170624192042) do
+
+  create_table "agents", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "articulos", force: :cascade do |t|
     t.string   "codigo",       limit: 255
@@ -38,6 +43,14 @@ ActiveRecord::Schema.define(version: 20170624093543) do
     t.datetime "updated_at",             null: false
   end
 
+  create_table "entities", force: :cascade do |t|
+    t.integer "agent_id",       limit: 4
+    t.string  "name",           limit: 255
+    t.string  "contact_number", limit: 255
+    t.string  "address",        limit: 255
+    t.string  "kind",           limit: 255
+  end
+
   create_table "enviarpedidos", force: :cascade do |t|
     t.integer  "solicitado",  limit: 4
     t.integer  "surtido",     limit: 4
@@ -45,6 +58,29 @@ ActiveRecord::Schema.define(version: 20170624093543) do
     t.integer  "articulo_id", limit: 4
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+  end
+
+  create_table "materials", force: :cascade do |t|
+    t.integer  "categoria_id",    limit: 4
+    t.string   "materialname",    limit: 255
+    t.integer  "cantidad",        limit: 4
+    t.decimal  "purchase_price",              precision: 10
+    t.decimal  "sale_price",                  precision: 10
+    t.decimal  "transport_price",             precision: 10
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer  "entity_id",         limit: 4
+    t.string   "offer_name",        limit: 255
+    t.integer  "amount",            limit: 4
+    t.time     "registration_date"
+    t.integer  "validity",          limit: 4
+    t.time     "expiration_date"
+    t.decimal  "offer_price",                   precision: 50, scale: 2
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
   end
 
   create_table "pedidos", force: :cascade do |t|
@@ -86,7 +122,7 @@ ActiveRecord::Schema.define(version: 20170624093543) do
     t.string   "apellidos",              limit: 255
     t.boolean  "admin",                              default: false
     t.string   "usuario",                limit: 255
-    t.string   "rol",                    limit: 15
+    t.string   "rol",                    limit: 255
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

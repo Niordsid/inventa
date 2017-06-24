@@ -1,5 +1,5 @@
 <% content_for :subtitulo do %>
-  Crear Articulo
+  Crear Oferta
 <% end %>
 
 <div class="col-md-6 well">
@@ -7,7 +7,7 @@
 
   <% if @articulo.errors.any? %>
     <div class="alert alert-danger" role="alert">
-      <h2><center>!Error al crear el Articulo!</center></h2>
+      <h2><center>!Error al crear la Oferta!</center></h2>
 
       <ul>
       <% @articulo.errors.each_with_index do |msg| %>
