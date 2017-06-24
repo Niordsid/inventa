@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   resources :pedidos
   resources :departamentos
   resources :enviarpedidos
+  resources :user
 end

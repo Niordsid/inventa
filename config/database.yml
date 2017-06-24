@@ -1,21 +1,23 @@
 default: &default
-  adapter: postgresql
-  encoding: unicode
-  username: developer
-  password: developer
-  host: localhost
+  adapter: mysql2
+  encoding: utf8
+  username: root
+  password: 123
+  host: 127.0.0.1
+  port: 3306
   pool: 5
+  socket: /path/to/the/socket/mysql.sock
+
 
 development:
   <<: *default
-  database: inventario_development
+  database: tresciclaje_pro
 
 test:
   <<: *default
-  database: inventario_test
+  database: tresciclaje_test
 
 production:
   <<: *default
-  database: inventario_production
-  username: inventario
-  password: <%= ENV['INVENTARIO_DATABASE_PASSWORD'] %>
+  database: tresciclaje_pro
+  

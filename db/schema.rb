@@ -11,75 +11,91 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160210021559) do
+ActiveRecord::Schema.define(version: 20170624064723) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "articulos", primary_key: "codigo", force: :cascade do |t|
-    t.string   "descripcion"
-    t.integer  "existencia"
-    t.boolean  "status",       default: true
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.integer  "categoria_id"
+  create_table "articulos", force: :cascade do |t|
+    t.string   "codigo",       limit: 255
+    t.string   "descripcion",  limit: 255
+    t.integer  "existencia",   limit: 4
+    t.boolean  "status",                   default: true
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.integer  "categoria_id", limit: 4
   end
 
   add_index "articulos", ["categoria_id"], name: "index_articulos_on_categoria_id", using: :btree
 
   create_table "categorias", force: :cascade do |t|
-    t.string   "nombre"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "nombre",     limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "departamentos", force: :cascade do |t|
-    t.string   "nombre"
-    t.string   "titular"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "nombre",     limit: 255
+    t.string   "titular",    limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "enviarpedidos", force: :cascade do |t|
-    t.integer  "solicitado"
-    t.integer  "surtido"
-    t.integer  "pedido_id"
-    t.integer  "articulo_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "solicitado",  limit: 4
+    t.integer  "surtido",     limit: 4
+    t.integer  "pedido_id",   limit: 4
+    t.integer  "articulo_id", limit: 4
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "pedidos", force: :cascade do |t|
-    t.integer  "codigo"
-    t.integer  "departamento_id"
-    t.integer  "user_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.integer  "codigo",          limit: 4
+    t.integer  "departamento_id", limit: 4
+    t.integer  "user_id",         limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   add_index "pedidos", ["departamento_id"], name: "index_pedidos_on_departamento_id", using: :btree
   add_index "pedidos", ["user_id"], name: "index_pedidos_on_user_id", using: :btree
 
+  create_table "roles", force: :cascade do |t|
+    t.string   "name",          limit: 255
+    t.integer  "resource_id",   limit: 4
+    t.string   "resource_type", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "",    null: false
-    t.string   "encrypted_password",     default: "",    null: false
-    t.string   "reset_password_token"
+    t.string   "email",                  limit: 255, default: "",    null: false
+    t.string   "encrypted_password",     limit: 255, default: "",    null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,     null: false
+    t.integer  "sign_in_count",          limit: 4,   default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.inet     "current_sign_in_ip"
-    t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.string   "nombre"
-    t.string   "apellidos"
-    t.boolean  "admin",                  default: false
-    t.string   "usuario"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+    t.string   "nombre",                 limit: 255
+    t.string   "apellidos",              limit: 255
+    t.boolean  "admin",                              default: false
+    t.string   "usuario",                limit: 255
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "users_roles", id: false, force: :cascade do |t|
+    t.integer "user_id", limit: 4
+    t.integer "role_id", limit: 4
+  end
+
+  add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
 
 end
